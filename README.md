@@ -1,4 +1,4 @@
-# Phone Infomration 2024 Classification
+# Phone Information 2024 Classification
 
 ### [dataset](https://www.kaggle.com/datasets/willianoliveiragibin/phone-information-2024)
 
