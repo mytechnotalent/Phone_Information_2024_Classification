@@ -10,45 +10,61 @@ License: [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0)
 
 ### **Objective**
 
-This report presents the development and evaluation of a binary classification model designed to analyze patterns in demographic, health, and occupational data to predict health-related outcomes. Using a dataset with variables like age, work hours, physical activity hours, and various health indicators, the model aims to uncover associations within the data, focusing on insights into demographic and occupational impacts on health and stress factors.
+This report presents the development and evaluation of a binary classification model designed to analyze patterns in demographic, health, occupational data, and smartphone specifications to predict health-related outcomes and device market trends. Using a dataset with variables such as age, work hours, physical activity hours, price, storage, battery capacity, and various device and health indicators, the model aims to uncover associations and insights into demographic, occupational, and market impacts on health, stress factors, and consumer preferences.
+
+---
 
 ### **Data Insights**
 
-**1. Continuous Variables Analysis**
-- **Age, Sleep Hours, and Work Hours Distributions:** Histograms of these variables show an approximately even spread without strong skewness, suggesting no notable clustering around specific values. The distributions are largely uniform, indicating a balanced representation across different ranges.
-- **Relationships Among Continuous Variables:** Scatter plots of Sleep_Hours versus Age, faceted by Occupation, display mostly flat trend lines, indicating weak or no correlation between Age and Sleep_Hours across occupations. The pair plot for continuous variables such as Age, Sleep_Hours, Work_Hours, and Physical_Activity_Hours confirms minimal interdependence, as no clear patterns or linear relationships are visible.
-- **Correlation Matrix:** A correlation matrix corroborates the lack of strong associations among continuous variables, with all correlation values close to zero, suggesting that these features are largely independent.
+#### **1. Continuous Variables Analysis**
+- **Age, Sleep Hours, Work Hours, and Smartphone Variables:** 
+  - **Age, Sleep Hours, and Work Hours Distributions:** Histograms exhibit balanced distributions without strong skewness, indicating even representation across ranges. 
+  - **Smartphone Variables:** Marginal distributions of **price**, **price_USD**, and **BATTERY** show strong right skewness, suggesting higher values are less common. **Storage** and **RAM** display multi-modal distributions, reflecting preferences for specific configurations. **Weight** and **Display_Size** are more symmetric, clustered around common values, indicating standardization in design.
+  - **Relationships:** Scatter plots of Sleep_Hours vs. Age (faceted by Occupation) show flat trends, indicating weak or no correlations. Similarly, pair plots among Age, Sleep_Hours, Work_Hours, and Physical_Activity_Hours confirm minimal interdependence, while smartphone features like storage, display size, and weight exhibit stronger correlations.
+  - **Correlation Matrix:** Variables like **price** and **price_USD** (correlation: 0.99), **Weight** and **Display_Size** (0.75), and **Year** with **quantile_50** (0.80) highlight significant associations. Moderate correlations include **storage** with price (0.67) and **RAM** with PPI_Density (0.48).
 
-**2. Categorical Variables Analysis**
-- **Gender, Occupation, Country, and Severity Distributions:** Bar charts display balanced representations across gender categories, varied occupational groups, and even distribution across countries like the USA, Canada, Australia, and the UK. Severity levels are diverse, with “Low” severity most common, followed by “Medium” and “High.”
-- **Consultation History and Stress Level:** Consultation_History and Stress_Level both show balanced distributions, with a slight tendency toward "Medium" stress levels over "Low" and "High." This balanced distribution could indicate varied but proportionate experiences across these factors.
-- **Interrelationships:** Heatmaps reveal demographic and health patterns, with specific gender and occupation combinations showing higher counts in certain categories. Occupational patterns differ across regions, with healthcare workers represented across severity levels and specific occupations showing distinct stress level distributions.
+#### **2. Categorical Variables Analysis**
+- **Gender, Occupation, Country, and Severity:** Bar charts show balanced gender representation, varied occupational groups, and even distributions across countries like the USA, Canada, Australia, and the UK. Health severity levels reveal "Low" severity as most common, followed by "Medium" and "High."
+- **Smartphone Features:** 
+  - **Foldable Status and Year Trends:** The binary feature Foldable is dominated by non-foldable devices, while Year reflects an increasing trend in device releases, peaking in 2022 and 2023.
+  - **Other Features:** **USB types** favor modern USB Type-C connectors, while **sensor configurations** highlight diverse combinations like fingerprint sensors, accelerometers, and gyroscopes. **Color options** span extensive palettes, reflecting manufacturers’ focus on differentiation.
+- **Interrelationships:** Heatmaps and bar charts reveal demographic and market patterns. Gender and occupation combinations show higher counts in specific health severity levels, while smartphone trends like **price**, **battery**, and **storage** differ between foldable and non-foldable devices.
 
-**3. Advanced Visualizations**
-- **Demographic and Health Patterns:** The bar charts illustrate interactions between Gender, Occupation, and other demographic factors, indicating that each group displays varied counts across categories, reflecting a diverse sample. Occupation is analyzed against factors like Country and Stress Level, highlighting representation in specific work sectors across health factors.
-- **Continuous Variable Comparisons:** Box plots of Age, Sleep Hours, Work Hours, and Physical Activity Hours across Gender, Occupation, and Country show similar distributions with overlapping ranges and median values. This uniformity suggests that these continuous measures do not significantly vary based on demographic categories, showing consistency within the dataset.
+#### **3. Advanced Visualizations**
+- **Demographic and Health Comparisons:** Box plots of Age, Sleep Hours, and Work Hours across Gender, Occupation, and Country show overlapping ranges and similar medians, suggesting uniform distributions within demographic groups.
+- **Smartphone Market Dynamics:** Trends in pricing, battery, and display characteristics across Foldable Status and Year highlight market evolution. Trend lines with shaded confidence intervals reveal category-specific relationships, such as diverging slopes in storage and price between foldable and non-foldable devices.
+
+---
 
 ### **Model Development and Selection**
 
-**Model Evaluation**
-- **Best Model:** Model 3 achieved an accuracy of 50.3% and an ROC AUC of 49.1%, indicating near-random performance. Despite this, certain statistically significant variables were identified, such as:
-  - **Geographic and Occupational Influence:** Interactions like `C(Occupation)[T.IT]:C(Country)[T.Germany]` (coefficient: -3.8900, p-value: 0.0297) and `C(Occupation)[T.Engineering]:C(Country)[T.India]` (coefficient: 3.4107, p-value: 0.0307).
-  - **Physical and Work Activity:** Physical_Activity_Hours (coefficient: 38.5331, p-value: 0.0357) shows a positive association, while polynomial terms involving Work_Hours and Physical_Activity_Hours exhibit mixed directions. These significant coefficients highlight potential areas for further exploration despite the model's limited predictive power.
+#### **Model Evaluation**
+- **Performance:** The binary classification model achieved an accuracy of 50.3% and an ROC AUC of 49.1%, reflecting near-random performance. Despite limited predictive power, statistically significant predictors were identified:
+  - **Key Predictors:**
+    - **Geographic and Occupational Influences:** Interaction terms like `C(Occupation)[T.IT]:C(Country)[T.Germany]` (coefficient: -3.8900, p-value: 0.0297) and `C(Occupation)[T.Engineering]:C(Country)[T.India]` (coefficient: 3.4107, p-value: 0.0307).
+    - **Physical Activity and Price Trends:** **Physical_Activity_Hours** (coefficient: 38.5331, p-value: 0.0357) and **price_USD** (negative coefficient) reveal significant but mixed effects on prediction.
+
+---
 
 ### **Implications**
 
-Although the selected model demonstrates limited predictive accuracy with its accuracy and ROC AUC close to chance levels, the identification of significant terms related to occupation, geographic location, and physical activity provides potential insights into demographic and occupational impacts on health factors. These findings could inform more targeted analyses or guide data collection strategies to enhance model performance.
+Although the model demonstrates limited predictive accuracy, it highlights significant patterns. In health analysis, occupation, country, and physical activity show potential impacts on stress and severity levels. In smartphone trends, features like price, storage, and battery exhibit associations with market preferences and evolving technologies. These findings underscore the value of targeted analyses and refined modeling approaches to uncover deeper insights.
+
+---
 
 ### **Recommendations and Next Steps**
 
-1. **Improve Model Accuracy:** Consider alternative modeling approaches or additional feature engineering to improve predictive power.
-2. **Investigate Feature Interactions:** Conduct deeper analyses on interaction terms involving demographic and occupational variables to better understand their impacts.
-3. **Address Model Limitations:** Explore methods to handle near-random model performance, possibly by balancing the dataset or testing other algorithms.
-4. **Expand Data Collection:** To enhance predictive accuracy, include more health-related or lifestyle features to capture a broader range of influences.
+1. **Improve Model Accuracy:** Employ alternative algorithms (e.g., gradient boosting) and advanced feature engineering to enhance performance.
+2. **Investigate Feature Interactions:** Further analyze interaction terms, particularly between demographics, occupations, and device features.
+3. **Address Data Imbalances:** Balance datasets or apply stratified sampling to mitigate the impact of uneven distributions.
+4. **Expand Data Collection:** Incorporate additional health-related or market-specific features to capture broader influences.
+5. **Enhance Smartphone Analysis:** Focus on emerging technologies like foldable devices and high-density displays to refine market insights.
+
+---
 
 ### **Conclusion**
 
-This analysis underscores the importance of data exploration in uncovering demographic and health-related patterns. While the model’s predictive accuracy is limited, significant terms related to occupation, country, and physical activity provide a foundation for further exploration. With refined feature selection and additional data, this model could contribute to identifying and understanding health risk factors across populations. This model should **NEVER** be used in production due to its extremely poor accuracy and ROC AUC scores.
+This analysis highlights demographic, occupational, and smartphone market dynamics while uncovering associations between health and device attributes. Despite its limitations, the model provides a foundation for further exploration, particularly in understanding consumer preferences and health-related patterns. Refinements in feature selection, data collection, and modeling can yield more actionable insights.
 
 ## Import Main Modules & Dataset
 
